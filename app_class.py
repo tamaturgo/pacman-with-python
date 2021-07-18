@@ -166,7 +166,21 @@ class App:
 
         for enemy in self.enemies:
             if enemy.grid_pos == self.player.grid_pos:
-                self.remove_life()
+                if self.player.bonusTimer < 0:
+                    self.remove_life()
+                else:
+                    idx = enemy.number
+                    self.enemies.remove(enemy)
+                    self.enemies.append(Enemy(self, vec(14,15), idx))
+
+        if self.player.bonusTimer > 0:
+            for i in range(len(self.enemies)):
+                self.enemies[i].targetFocus = vec(14,15)
+                print(self.enemies[i].target)
+        else:
+            for i in range(len(self.enemies)):
+                self.enemies[i].targetFocus = self.player.grid_pos
+                print(self.enemies[i].target)
 
     def playing_draw(self):
         self.screen.fill(BLACK)

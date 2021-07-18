@@ -15,6 +15,7 @@ class Player:
         self.current_score = 0
         self.speed = 2
         self.lives = 1
+        self.bonusTimer = 0;
 
     def update(self):
         if self.able_to_move:
@@ -28,6 +29,8 @@ class Player:
                             self.app.cell_width//2)//self.app.cell_width+1
         self.grid_pos[1] = (self.pix_pos[1]-TOP_BOTTOM_BUFFER +
                             self.app.cell_height//2)//self.app.cell_height+1
+        self.bonusTimer -= 0.01;
+
         if self.on_coin():
             self.eat_coin()
         if self.on_bonus():
@@ -59,9 +62,11 @@ class Player:
         if self.grid_pos in self.app.bonus:
             if int(self.pix_pos.x+TOP_BOTTOM_BUFFER//2) % self.app.cell_width == 0:
                 if self.direction == vec(1, 0) or self.direction == vec(-1, 0):
+                    self.bonusTimer = 2;
                     return True
             if int(self.pix_pos.y+TOP_BOTTOM_BUFFER//2) % self.app.cell_height == 0:
                 if self.direction == vec(0, 1) or self.direction == vec(0, -1):
+                    self.bonusTimer = 2;
                     return True
         return False
 

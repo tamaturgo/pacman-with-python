@@ -17,10 +17,12 @@ class Enemy:
         self.direction = vec(0, 0)
         self.personality = self.set_personality()
         self.target = None
+        self.targetFocus = self.app.player.grid_pos
         self.speed = self.set_speed()
 
     def update(self):
         self.target = self.set_target()
+
         if self.target != self.grid_pos:
             self.pix_pos += self.direction * self.speed
             if self.time_to_move():
@@ -45,12 +47,12 @@ class Enemy:
 
     def set_target(self):
         if self.personality == "speedy" or self.personality == "slow":
-            return self.app.player.grid_pos
+            return self.targetFocus
         else:
             if self.app.player.grid_pos[0] > COLS//2 and self.app.player.grid_pos[1] > ROWS//2:
-                return vec(1, 1)
+                return [self.app.player.grid_pos[0], self.app.player.grid_pos[1]]
             if self.app.player.grid_pos[0] > COLS//2 and self.app.player.grid_pos[1] < ROWS//2:
-                return vec(1, ROWS-2)
+                return [self.app.player.grid_pos[0], self.app.player.grid_pos[1]]
             if self.app.player.grid_pos[0] < COLS//2 and self.app.player.grid_pos[1] > ROWS//2:
                 return vec(COLS-2, 1)
             else:
@@ -155,6 +157,6 @@ class Enemy:
         elif self.number == 1:
             return "slow"
         elif self.number == 2:
-            return "slow"
+            return "scared"
         else:
-            return "speedy"
+            return "random"
